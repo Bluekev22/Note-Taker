@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const notes = require('./db/notes.json');
 const fs = require('fs');
 const util = require('util');
 
@@ -60,19 +59,31 @@ app.post('/api/notes', (req, res) => {
 });
 
 app.delete('/api/notes/:id', (req, res) => {
-  if (req.body && req.params.id) {
-    console.info(`${req.method} request received to delete a note`);
-    const noteID = req.params.id;
-    for (let i = 0; i < notes.length; i++) {
-      const currentReview = notes[i];
-      if (currentReview.id === noteID) {
-        res.json(currentReview);
-        return;
-      }
-    }
-    res.json('Review ID not found');
+ const id = req.params.id;
+ 
+
+ fs.readFile('./db/notes.json', 'utf8', (err, data) => {
+  if (err) {
+    console.error(err);
+  } else {
+    // Convert string into JSON object
+    const parsedNotes = JSON.parse(data);
+    notes = parsedNotes.filter(note => note.note_id !== id);
+    
+    
+
+    // Write updated reviews back to the file
+    fs.writeFile(
+      './db/notes.json',
+      JSON.stringify(notes, null, 4),
+      (writeErr) =>
+        writeErr
+          ? console.error(writeErr)
+          : console.info('Successfully updated notes!')
+    );
   }
-});
+
+})});
 
 
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, '/public/index.html')));

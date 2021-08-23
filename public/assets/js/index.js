@@ -10,7 +10,6 @@ if (window.location.pathname === '/notes') {
   saveNoteBtn = document.querySelector('.save-note');
   newNoteBtn = document.querySelector('.new-note');
   noteList = document.querySelectorAll('.list-container .list-group');
-  trashCan = document.querySelector('.delete-note');
   thisNote = document.querySelector('.list-item-title');
 }
 
@@ -85,13 +84,15 @@ const handleNoteDelete = (e) => {
   e.stopPropagation();
 
   const note = e.target;
-  const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
+  const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).note_id;
+
 
   if (activeNote.id === noteId) {
     activeNote = {};
   }
 
   deleteNote(noteId).then(() => {
+    deleteListItem(noteId);
     getAndRenderNotes();
     renderActiveNote();
   });
@@ -117,6 +118,16 @@ const handleRenderSaveBtn = () => {
     show(saveNoteBtn);
   }
 };
+
+const deleteListItem = noteId => {
+  console.log(noteId);
+  var savedItems = document.querySelectorAll('.list-group-item'), i;
+  for (i = 0; i < savedItems.length; ++i) {
+    if (savedItems[i].getAttribute('data-note').note_id === noteId) {
+      savedItems[i].remove();
+    }
+  }
+}
 
 // Render the list of note titles
 const renderNoteList = async (notes) => {
