@@ -60,7 +60,6 @@ app.post('/api/notes', (req, res) => {
 
 app.delete('/api/notes/:id', (req, res) => {
  const id = req.params.id;
- 
 
  fs.readFile('./db/notes.json', 'utf8', (err, data) => {
   if (err) {
@@ -68,7 +67,7 @@ app.delete('/api/notes/:id', (req, res) => {
   } else {
     // Convert string into JSON object
     const parsedNotes = JSON.parse(data);
-    notes = parsedNotes.filter(note => note.note_id !== id);
+    const notes = parsedNotes.filter(note => note.note_id !== id);
     
     
 
@@ -80,8 +79,12 @@ app.delete('/api/notes/:id', (req, res) => {
         writeErr
           ? console.error(writeErr)
           : console.info('Successfully updated notes!')
+
     );
+    
   }
+ 
+  
 
 })});
 
