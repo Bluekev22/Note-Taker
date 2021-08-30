@@ -1,6 +1,6 @@
 # Note-Taker [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Link to application: https://shrouded-bastion-66305.herokuapp.com/
+### Link to application: https://shrouded-bastion-66305.herokuapp.com/
   
 # Table of Contents
   
